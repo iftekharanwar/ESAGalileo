@@ -40,7 +40,8 @@ const SatelliteOverview = () => {
     setError(null);
 
     try {
-      const response = await fetch(`https://api.n2yo.com/rest/v1/satellite/above/41.702/-76.014/0/70/18/&apiKey=L56653-TSD4L8-2DTEDS-595E`);
+      // Updated the API endpoint to use the proxy
+      const response = await fetch(`/api/rest/v1/satellite/above/41.702/-76.014/0/70/18/`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -77,7 +78,8 @@ const SatelliteOverview = () => {
     },
   };
 
-  const labels = satelliteData ? satelliteData.above.map(sat => sat.satname) : [];
+  // Ensure satelliteData and satelliteData.above are defined before mapping
+  const labels = satelliteData && satelliteData.above ? satelliteData.above.map(sat => sat.satname) : [];
 
   const data = {
     labels,
@@ -85,8 +87,8 @@ const SatelliteOverview = () => {
       {
         label: 'Satellite Altitude (km)',
         data: labels.map(label => {
-          const satellite = satelliteData.above.find(sat => sat.satname === label);
-          return satellite.satalt;
+          const satellite = satelliteData && satelliteData.above ? satelliteData.above.find(sat => sat.satname === label) : null;
+          return satellite ? satellite.satalt : null;
         }),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
