@@ -40,15 +40,17 @@ const SatelliteOverview = () => {
     setError(null);
 
     try {
-      // Directly append the API key as a query parameter in the fetch request
-      const apiKey = process.env.REACT_APP_N2YO_API_KEY;
-      const response = await fetch(`/api/rest/v1/satellite/above/41.702/-76.014/0/70/18/?apiKey=${apiKey}`);
+      // Update the fetch request to use the Express server endpoint
+      const response = await fetch(`/satellite-data`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       setSatelliteData(data);
-      console.log('Satellite data fetched:', data); // Added console log to track fetched data
     } catch (error) {
       setError(error.message);
       toast({
@@ -67,9 +69,6 @@ const SatelliteOverview = () => {
     fetchSatelliteData();
   }, [fetchSatelliteData]);
 
-  // Log the REACT_APP_N2YO_API_KEY to verify it is being loaded correctly
-  console.log('REACT_APP_N2YO_API_KEY:', process.env.REACT_APP_N2YO_API_KEY);
-
   const options = {
     responsive: true,
     plugins: {
@@ -85,7 +84,6 @@ const SatelliteOverview = () => {
 
   // Ensure satelliteData and satelliteData.above are defined before mapping
   const labels = satelliteData && satelliteData.above ? satelliteData.above.map(sat => sat.satname) : [];
-  console.log('Labels for graph:', labels); // Added console log to track labels
 
   const data = {
     labels,
@@ -101,7 +99,6 @@ const SatelliteOverview = () => {
       },
     ],
   };
-  console.log('Data for graph:', data); // Added console log to track graph data
 
   return (
     <VStack spacing={4} align="stretch">
