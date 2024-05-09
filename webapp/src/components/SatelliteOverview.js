@@ -7,6 +7,27 @@ import {
   Spinner,
   useToast,
 } from '@chakra-ui/react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const SatelliteOverview = () => {
   const [satelliteData, setSatelliteData] = useState(null);
@@ -43,6 +64,36 @@ const SatelliteOverview = () => {
     fetchSatelliteData();
   }, [fetchSatelliteData]);
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Satellite Data Over Time',
+      },
+    },
+  };
+
+  const labels = satelliteData ? satelliteData.above.map(sat => sat.satname) : [];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Satellite Altitude (km)',
+        data: labels.map(label => {
+          const satellite = satelliteData.above.find(sat => sat.satname === label);
+          return satellite.satalt;
+        }),
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
+
   return (
     <VStack spacing={4} align="stretch">
       {loading && (
@@ -58,19 +109,8 @@ const SatelliteOverview = () => {
       )}
       {satelliteData && (
         <Box>
-          {/* Satellite data visualization will go here */}
           <Text>Data loaded successfully!</Text>
-          {/* Example visualization: List of satellites */}
-          <VStack align="stretch" spacing={3}>
-            {satelliteData.above.map(satellite => (
-              <Box key={satellite.satid} p={5} shadow="md" borderWidth="1px">
-                <Text fontWeight="bold">{satellite.satname}</Text>
-                <Text>Latitude: {satellite.satlat}</Text>
-                <Text>Longitude: {satellite.satlng}</Text>
-                <Text>Altitude: {satellite.satalt} km</Text>
-              </Box>
-            ))}
-          </VStack>
+          <Line options={options} data={data} />
         </Box>
       )}
     </VStack>
