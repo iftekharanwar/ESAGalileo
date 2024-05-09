@@ -11,7 +11,7 @@ module.exports = function(app) {
       },
       onProxyReq: function(proxyReq, req, res) {
         // Add API key to each request before it's forwarded
-        proxyReq.path += `&apiKey=${process.env.N2YO_API_KEY}`;
+        proxyReq.path += `&apiKey=${process.env.REACT_APP_N2YO_API_KEY}`;
       },
     })
   );
