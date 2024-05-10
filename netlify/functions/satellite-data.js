@@ -1,6 +1,10 @@
-import fetch from 'node-fetch';
+let fetch;
 
 exports.handler = async function(event, context) {
+  if (!fetch) {
+    fetch = (await import('node-fetch')).default;
+  }
+
   const { httpMethod, queryStringParameters } = event;
 
   // Only allow GET requests
