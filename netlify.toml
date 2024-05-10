@@ -1,0 +1,4 @@
+# Netlify settings for the ESAGalileo project
+[build]
+  # Directory to look for serverless functions
+  functions = "netlify/functions"
