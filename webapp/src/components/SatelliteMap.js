@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -18,7 +18,7 @@ const SatelliteMap = () => {
   });
 
   // Function to fetch satellite data from the N2YO API
-  const fetchSatelliteData = async () => {
+  const fetchSatelliteData = useCallback(async () => {
     try {
       const response = await fetch(`https://api.n2yo.com/rest/v1/satellite/above/${mapCenter.lat}/${mapCenter.lng}/0/90/&apiKey=${process.env.REACT_APP_N2YO_API_KEY}`);
       if (!response.ok) {
@@ -29,7 +29,7 @@ const SatelliteMap = () => {
     } catch (error) {
       console.error("Failed to fetch satellite data:", error);
     }
-  };
+  }, [mapCenter.lat, mapCenter.lng]); // Dependencies for useCallback
 
   // Fetch satellite data on component mount and set an interval to update satellite positions every minute
   useEffect(() => {
