@@ -40,8 +40,8 @@ const SatelliteOverview = () => {
     setError(null);
 
     try {
-      // Update the fetch request to use the Express server endpoint
-      const response = await fetch(`/satellite-data`, {
+      // Update the fetch request to use the Netlify serverless function endpoint
+      const response = await fetch('/.netlify/functions/satellite-data', {
         headers: {
           'Content-Type': 'application/json'
         }
