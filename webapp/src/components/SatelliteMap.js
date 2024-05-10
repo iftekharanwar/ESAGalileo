@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import satelliteIconUrl from '../assets/satellite-icon.png'; // Added import for satellite icon
 
 const SatelliteMap = () => {
   // Default position set to Europe's geographical center
@@ -11,7 +12,7 @@ const SatelliteMap = () => {
 
   // Custom icon for satellite markers
   const satelliteIcon = new L.Icon({
-    iconUrl: require('../assets/satellite-icon.png'),
+    iconUrl: satelliteIconUrl, // Updated to use imported satellite icon
     iconSize: [25, 25],
     iconAnchor: [12, 12],
     popupAnchor: [0, -10]
