@@ -1,5 +1,6 @@
-require('dotenv').config();
-const axios = require('axios');
+import dotenv from 'dotenv';
+dotenv.config();
+import axios from 'axios';
 
 const requestBody = {
   input: {
