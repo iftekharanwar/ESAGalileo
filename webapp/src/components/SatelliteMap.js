@@ -5,8 +5,8 @@ import L from 'leaflet';
 
 const SatelliteMap = () => {
   // Default position set to Europe's geographical center
-  const [mapCenter, setMapCenter] = useState({ lat: 50.1109, lng: 10.1506 });
-  const [zoomLevel, setZoomLevel] = useState(3);
+  const [mapCenter] = useState({ lat: 50.1109, lng: 10.1506 });
+  const [zoomLevel] = useState(3);
   const [satellites, setSatellites] = useState([]);
 
   // Custom icon for satellite markers
@@ -31,13 +31,12 @@ const SatelliteMap = () => {
     }
   };
 
-  // Fetch satellite data on component mount
+  // Fetch satellite data on component mount and set an interval to update satellite positions every minute
   useEffect(() => {
     fetchSatelliteData();
-    // Set an interval to update satellite positions every minute
     const interval = setInterval(fetchSatelliteData, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchSatelliteData]);
 
   return (
     <MapContainer center={mapCenter} zoom={zoomLevel} style={{ height: '100vh', width: '100vw' }}>
